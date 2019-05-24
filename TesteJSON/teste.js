@@ -1,5 +1,7 @@
+const fs = require('fs');
 var path_1 = './okada2018.tei.json';
 var path_2 = './zhou2018.tei.json';
+
 var json = JSON.parse(fs.readFileSync(path_2, "utf8"));
 
 // Titulo -------------------------------------------------------------------------------------------------------------//
@@ -29,27 +31,6 @@ catch(err) {
     console.log(" + DOI não foi encontrado");
 }
 
-/*
-// Bibliografia -------------------------------------------------------------------------------------------------------//
-var length_bibleStruct = json.TEI[0].text[0].back[0].div[0].listBibl[0].biblStruct.length;
-var length_bibleStruct_author;
-console.log("[List BiblStruct]");
-for(var j = 0; j<length_bibleStruct; j++) {
-    console.log(" - Title : "+json.TEI[0].text[0].back[0].div[0].listBibl[0].biblStruct[j].analytic[0].title[0]._attr[0]._value);
-
-    length_bibleStruct_author = json.TEI[0].text[0].back[0].div[0].listBibl[0].biblStruct[j].analytic[0].author.length;
-    for(var k = 0; k<length_bibleStruct_author; k++) {
-        console.log(" - Author : " + json.TEI[0].text[0].back[0].div[0].listBibl[0].biblStruct[j].analytic[0].author[k].persName[0].surname[0]._text
-            + " " + json.TEI[0].text[0].back[0].div[0].listBibl[0].biblStruct[j].analytic[0].author[k].persName[0].forename[0]._text);
-    }
-    console.log(" - Publication : "+json.TEI[0].text[0].back[0].div[0].listBibl[0].biblStruct[j].monogr[0].title[0]._text);
-    console.log(" - Year : "+json.TEI[0].text[0].back[0].div[0].listBibl[0].biblStruct[j].monogr[0].imprint[0].date[0]
-        ._attr.when._value);
-    console.log("");
-    console.log("");
-}
-*/
-
 // Keyword ------------------------------------------------------------------------------------------------------------//
 console.log(" + KeyWords :");
 
@@ -67,4 +48,99 @@ try {
 }
 catch(err) {
     console.log(" + Abstract não foi encontrado");
+}
+
+/*
+// Bibliografia -------------------------------------------------------------------------------------------------------//
+
+var indice = 0;
+var length_bibleStruct = json.TEI[0].text[0].back[0].div[0].listBibl[0].biblStruct.length;
+var length_bibleStruct_author;
+
+
+console.log("");
+console.log("");
+console.log("[List BiblStruct]");
+
+for(var j = 0; j<length_bibleStruct; j++) {
+    try{
+        // Nesse if, é testado se referência possui título com valor null. Se for null, é gerado um erro.
+        if(json.TEI[0].text[0].back[0].div[indice].listBibl[indice].biblStruct[j].analytic[0].title[0]._text == null) {
+            throw new Error();
+        }
+        if(json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].hasOwnProperty('analytic')) {
+            length_bibleStruct_author = json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].analytic[0].author.length;
+        }else {
+            length_bibleStruct_author = json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].monogr[0].author.length;
+        }
+
+        if(json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].hasOwnProperty('analytic')) {
+            console.log(" - Title : " + json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].analytic[0].title[0]._text);
+        }else {
+            console.log(" - Title : "+json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].monogr[0].title[0]._text);
+        }
+
+        for(var k = 0; k<length_bibleStruct_author; k++) {
+            if(json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].hasOwnProperty('analytic')) {
+                console.log(" - Author : " + json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].analytic[0].author[k].persName[0].surname[0]._text
+                    + " " + json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].analytic[0].author[k].persName[0].forename[0]._text);
+            }else {
+                console.log(" - Author : " + json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].monogr[0].author[k].persName[0].surname[0]._text
+                    + " " + json.TEI[0].text[0].back[0].div[indice0].listBibl[0].biblStruct[j].monogr[0].author[k].persName[0].forename[0]._text);
+            }
+        }
+
+        console.log(" - Publication : "+json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].monogr[0].title[0]._text);
+        console.log(" - Year : "+json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].monogr[0].imprint[0].date[0]._attr.when._value);
+    }catch(err){
+        console.log("---")
+    }
+    console.log("");
+}
+*/
+
+// Bibliografia -------------------------------------------------------------------------------------------------------//
+var indice = 1;
+var length_bibleStruct = json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct.length;
+var length_bibleStruct_author;
+
+console.log("");
+console.log("");
+console.log("[List BiblStruct]");
+
+for(var j = 0; j<length_bibleStruct; j++) {
+    try{
+        if(json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].analytic[0].title[0]._text == null) {
+            throw new Error();
+        }
+
+        if(json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].hasOwnProperty('analytic')) {
+            length_bibleStruct_author = json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].analytic[0].author.length;
+        }else {
+            length_bibleStruct_author = json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].monogr[0].author.length;
+        }
+
+        if(json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].hasOwnProperty('analytic')) {
+            console.log(" - Title : " + json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].analytic[0].title[0]._text);
+        }else {
+            console.log(" - Title : "+json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].monogr[0].title[0]._text);
+        }
+
+        for(var k = 0; k<length_bibleStruct_author; k++) {
+            if(json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].hasOwnProperty('analytic')) {
+                console.log(" - Author : " + json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].analytic[0].author[k].persName[0].surname[0]._text
+                    + " " + json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].analytic[0].author[k].persName[0].forename[0]._text);
+            }else {
+                console.log(" - Author : " + json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].monogr[0].author[k].persName[0].surname[0]._text
+                    + " " + json.TEI[0].text[0].back[0].div[indice0].listBibl[0].biblStruct[j].monogr[0].author[k].persName[0].forename[0]._text);
+            }
+        }
+
+        console.log(" - Publication : "+json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].monogr[0].title[0]._text);
+        console.log(" - Year : "+json.TEI[0].text[0].back[0].div[indice].listBibl[0].biblStruct[j].monogr[0].imprint[0].date[0]._attr.when._value);
+
+    }catch(err){
+        console.log("---")
+    }
+    console.log("");
 }
